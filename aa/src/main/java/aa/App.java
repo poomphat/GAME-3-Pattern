@@ -6,7 +6,12 @@ import java.util.*;
  */
 public class App 
 {
-    public static void main( String[] args ){	
+	
+    
+
+	public static void main( String[] args ){
+		Thread t1 = new Thread(new MyThread());
+        t1.start();
     	System.out.println("Hello");
     	Scanner scanner = new Scanner(System.in);
     	Hero hero = Hero.GetHero();
@@ -32,5 +37,26 @@ public class App
 	    	}
     	
     }
+    
 } 
+class MyThread extends Thread {
+	public static int sec;
+
+    @Override
+    public void run() {
+    	int sec = 0;
+        while (true){       	
+         try {
+           sec++;
+           System.out.println(sec+" seconds");
+           Thread.sleep(1000L); 
+          }
+          catch (InterruptedException e) {
+          }
+        }
+        
+    }
+
+
+}
 
