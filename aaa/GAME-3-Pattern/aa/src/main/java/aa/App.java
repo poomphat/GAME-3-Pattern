@@ -1,17 +1,46 @@
 package aa;
 
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.util.*;
-import static javax.swing.text.html.HTML.Tag.I;
 
 /**
  * Hello world!
  *
  */
-public class App {
+public class App implements KeyListener{
+	
+	int sec;
+	boolean pause;
+	
+	public App() {
+        Thread thread = new Thread(new Runnable() {
+            public void run() {
+                gameLoop();
+                if (pause) {
+                }
+            }
+        });
+        thread.start();
+	}
 
-    public static void main(String[] args) {
-        Thread t1 = new Thread(new MyThread());
-        t1.start();
+    private void gameLoop() {
+		while (true) {
+			sec++;
+			System.out.println(sec+"sec");
+			if (sec%2 == 0) {
+				System.out.println("monster atk hero");
+			}
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
+	public static void main(String[] args) {
+		App p = new App();
         List<String> Pool = new ArrayList<String>();//เก็บบอส
         List<String> UsePool = new ArrayList<String>();
         String pop;
@@ -85,24 +114,19 @@ public class App {
 
     }
 
+
+
+		public void keyReleased(KeyEvent e) {
+
+		}
+	
+		public void keyPressed(KeyEvent e) {
+	
+		}
+	
+		public void keyTyped(KeyEvent e) {
+	
+		}
 }
 
-class MyThread extends Thread {
 
-    public static int sec;
-
-    @Override
-    public void run() {
-        int sec = 0;
-        while (true) {
-            try {
-               sec++;
-                System.out.println(sec + " seconds");
-               Thread.sleep(1000L);
-            } catch (InterruptedException e) {
-            }
-        }
-
-    }
-
-}
