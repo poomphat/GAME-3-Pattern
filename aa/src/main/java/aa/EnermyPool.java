@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EnermyPool {
-	List<String> Pool = new ArrayList<String>();
-    List<String> UsePool = new ArrayList<String>();
+	List<Boss> Pool = new ArrayList<Boss>();
+    List<Boss> UsePool = new ArrayList<Boss>();
     String pop;
-	int MaxPool = Pool.size();
+    
+
+    
+	int MaxPool = 3;
 	public EnermyPool(){
-		Pool.add("Boss");
-	    Pool.add("Monster");
-	    Pool.add("Boss");
-	    Pool.add("Monster");
-	    Pool.add("Boss");
-	    MaxPool = Pool.size();
+			
+		
 	}
 	
     
@@ -26,10 +25,13 @@ public class EnermyPool {
     public int getMaxPool() {
     	return MaxPool;
     }
-    public String borrow() {
-    	return Pool.remove(0);
+    public Boss borrow() {
+    	if ((Pool.size() == 0)&&(UsePool.size()<MaxPool))   			
+    		return new Boss();
+    	else
+    		return Pool.remove(0);
     }
-    public void back(String type) {
-    	Pool.add(type);
+    public void back(Boss boss) {
+    	Pool.add(boss);
     }
 }

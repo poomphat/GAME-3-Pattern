@@ -21,8 +21,7 @@ public class App {
 	            	System.out.println("Game Over!!!");
 	            	break;
 	            }
-	        	String type = pool.borrow(); 
-	        	if (type.equals("Monster")) {
+	            for (int o = 0;o<2;o++) {
 	        		Monster monster = mon1.clone();
 	                System.out.println("Found Monster : Hp is " + monster.getHp());
 	                System.out.println("What do you do : Attack(A) Heal(H)");
@@ -42,12 +41,9 @@ public class App {
 	                        System.out.println("Heal!!!!!!!, Hero Hp now is " + hero.getHp());
 	                    }
 	               }
-	               pool.back("Monster");
 	            }
 	
-	            if (type.equals("Boss")) {
-	                Boss boss = Boss.GetBoss();
-	                boss.Hp = 200;
+	            	Boss boss = pool.borrow(); 
 	                System.out.println("Found Boss : Hp is " + boss.getHp());
 	                System.out.println("What do you do : Attack(A) Heal(H)");
 	                while (boss.getHp() != 0) {
@@ -66,8 +62,8 @@ public class App {
 	                        System.out.println("Heal!!!!!!!, Hero Hp now is " + hero.getHp());
 	                    }
 	                }
-	                pool.back("Boss");
-	           }
+	                pool.back(boss);
+	           
 	        }
 	        if (hero.getHp() > 0) {
 	        	System.out.println("You win!!!");
