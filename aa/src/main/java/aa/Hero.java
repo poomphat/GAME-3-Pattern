@@ -25,4 +25,10 @@ public class Hero extends Character{
 	public int getHp() {
 		return this.Hp;
 	}
+	public void heal() {
+		this.Hp +=50;
+		if (this.Hp > 100) {
+			this.Hp = 100;
+		}
+	}
 }
