@@ -1,12 +1,16 @@
 package aa;
 
 
-
 import java.util.*;
+import java.util.List;
+import java.awt.*;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.event.*;
+import java.awt.BorderLayout;
 import java.io.IOException;
+import java.io.PrintStream;
 
 import javax.swing.*;
 
@@ -16,8 +20,15 @@ import javax.swing.*;
  */
 public class App extends JPanel implements ActionListener{
 	static boolean playing = true,IsDead=false;
+	JTextArea textArea = new JTextArea(150, 25);
+	PrintStream printStream = new PrintStream(new CustomOutputStream(textArea));
 	JButton attack,heal,exit,start;
+
+	JPanel p1;
 	
+	PrintStream standardOut;
+	
+	static JFrame frame=new JFrame();
 	List<Boss> TombOfBoss = new ArrayList<Boss>();
 	
 	static Hero hero = Hero.GetHero();
@@ -30,6 +41,17 @@ public class App extends JPanel implements ActionListener{
 	static boolean firstTime=true,firstTimeBoss=true;
 	public App() {
 		super();
+		
+		standardOut = System.out;
+		System.setOut(printStream);
+        System.setErr(printStream);
+        textArea.setEditable(false);
+	//	p1 = new JPanel();
+	   //  p2 = new JPanel();
+		
+		
+		
+		
 		start=new JButton("start");
 		 attack = new JButton("Attack");
 		 heal = new JButton("Heal");
@@ -40,12 +62,51 @@ public class App extends JPanel implements ActionListener{
         exit.addActionListener(new ActionListener() {
         	@Override
 			public void actionPerformed(ActionEvent e) { System.exit(0);; }
-		});
-        add(start);
-        add(attack);
-        add(heal);
-        add(exit);
-        setLayout(new FlowLayout(FlowLayout.CENTER));
+		}); 
+        
+        setLayout(new GridBagLayout());
+        GridBagConstraints constraints = new GridBagConstraints();
+        constraints.gridx = 0;
+        constraints.gridy = 0;
+        constraints.insets = new Insets(10, 10, 10, 10);
+        constraints.anchor = GridBagConstraints.WEST;
+        add(start, constraints);
+        
+        constraints.gridx = 1;
+        add(attack, constraints);
+        constraints.gridx = 2;
+        add(heal,constraints);
+        constraints.gridx = 3;
+        add(exit,constraints);
+        
+        
+        constraints.gridx = 1;
+        constraints.gridy = 1;
+        constraints.gridwidth = 2;
+        constraints.fill = GridBagConstraints.BOTH;
+        constraints.weightx = 1.0;
+        constraints.weighty = 1.0;
+        
+        add(new JScrollPane(textArea), constraints);
+        
+        //frame.setLayout(new GridLayout(1,));
+      // p1.setLayout(new GridLayout(1, 1));
+	//	p2.setLayout(new GridLayout(1,4));
+        
+        
+	//	p1.add(new JScrollPane(textArea));
+	/*	frame.add(attack);
+		frame.add(heal);
+		frame.add(start);
+		frame.add(exit);
+		frame.add(new JScrollPane(textArea));
+		
+        
+     */   
+       // frame.add(p1);
+      //  frame.add(p2); 
+       
+    //   frame.setLayout(new FlowLayout());
 	        //}
 	   
 	    
@@ -53,21 +114,21 @@ public class App extends JPanel implements ActionListener{
 		//super();
 		
 	}
-	public void paintComponent(Graphics g0) {
-		
-	}
-	
+
     public static void main(String[] args) throws IOException {   
         
-    	JFrame frame = new JFrame();
+    	//JFrame frame = new JFrame();
+    	
         frame.getContentPane().add(new App());
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setBounds(100, 100, 640, 600);
+        frame.setSize(640, 600);
+    //    frame.setMaximumSize(new Dimension(650,700));   //useless code -.-
+        frame.setMinimumSize(new Dimension(440,400));      
         frame.setTitle("Gamenaja");
         frame.setVisible(true);
-        System.out.println("|||||||||||||||||||||||");
-        System.out.println("||  Start Adventure  ||");
-        System.out.println("|||||||||||||||||||||||");
+        System.out.println("\t\t"+"|||||||||||||||||||||||||||||||||||");
+        System.out.println("\t\t"+"||  Start Adventure  ||");
+        System.out.println("\t\t"+"|||||||||||||||||||||||||||||||||||");
         
         //Scanner scanner = new Scanner(System.in);
        
@@ -81,10 +142,10 @@ public class App extends JPanel implements ActionListener{
         	if(!IsDead) {											//Is dead=false 
         	if(count<3) {											
 	            if (hero.getHp() == 0) {
-	            	System.out.println("Game Over!!!");
+	            	System.out.println(">>"+"Game over!!!");
 	            	
 	            }
-	           // System.err.println("count = "+count);
+	           // System.err.println("\t>>"+"count = "+count);
 	      		
 	            if(nmonster>0) {
 	                
@@ -132,7 +193,7 @@ public class App extends JPanel implements ActionListener{
 	            
 }	
         	else {													// dead (Isdead = true)
-        		System.out.println("game is over!!! press start or exit");
+        		System.out.println(">>"+"game is over!!! press start or exit");
         		if(e.getSource().equals(start)) {
         			
         			for(int u = 0;u<count;u++) {
@@ -144,36 +205,36 @@ public class App extends JPanel implements ActionListener{
 }
         	
         }
-      //  System.err.println("Bug??? naniiiiiiiiiiiii");
+      //  System.err.println("\t>>"+"Bug??? naniiiiiiiiiiiii");
     }
     void showMonster() {
     	if(nmonster>=1) {
-    	System.out.println("Found Monster : Hp is " + monster.getHp());
-    	System.out.println("Hero Hp now is " + hero.getHp());
-        System.out.println("What do you do : Attack(A) Heal(H)");
-        System.out.println("---------------------------------");
+    	System.out.println(">>"+"Found Monster : Hp is " + monster.getHp());
+    	System.out.println(">>"+"Hero Hp now is " + hero.getHp());
+        System.out.println(">>"+"What do you do : Attack(A) Heal(H)");
+        System.out.println("-----------------------------------------------------------------------------------------------------------");
         }
     }
     void attMonster() {
     	 hero.Attack(monster);
-         System.out.println("Monster Hp now is " + monster.getHp());
+         System.out.println(">>"+"Monster Hp now is " + monster.getHp());
          monster.Attack(hero);
-         System.out.println("Hero Hp now is " + hero.getHp());
-         System.out.println("---------------------------------");
+         System.out.println(">>"+"Hero Hp now is " + hero.getHp());
+         System.out.println("-----------------------------------------------------------------------------------------------------------");
     }
     void heroHeal() {
     	hero.heal();
-        System.out.println("Heal!!!!!!!, Hero Hp now is " + hero.getHp());
-        System.out.println("---------------------------------");
+        System.out.println(">>"+"Heal!!!!!!!, Hero Hp now is " + hero.getHp());
+        System.out.println("-----------------------------------------------------------------------------------------------------------");
     }
     void showBoss() {
     	
-    	System.out.println("Found Boss : Hp is " + boss.getHp());
-    	System.out.println("Hero Hp now is " + hero.getHp());
-        System.out.println("What do you do : Attack(A) Heal(H)");
+    	System.out.println(">>"+"Found Boss : Hp is " + boss.getHp());
+    	System.out.println(">>"+"Hero Hp now is " + hero.getHp());
+    	System.out.println("-----------------------------------------------------------------------------------------------------------");
     }
     void startNew() {
-    	System.out.println("Game Start!!!");
+    	System.out.println(">>"+"Game Start!!!");
     	IsDead=false;
     	hero.Hp=100;
     	nmonster=2;
@@ -181,22 +242,22 @@ public class App extends JPanel implements ActionListener{
     	
     }
     void gameOver() {
-    	System.err.println("Game over");
+    	System.err.println("\t>>"+"Game over");
     	IsDead=true;
     }
     void attBoss() {
     	
     	  hero.Attack(boss);
-          System.out.println("Boss Hp now is " + boss.getHp());
+          System.out.println("\t>>"+"Boss Hp now is " + boss.getHp());
           boss.Attack(hero);
-          System.out.println("Hero Hp now is " + hero.getHp());
-          System.out.println("---------------------------------");
+          System.out.println("\t>>"+"Hero Hp now is " + hero.getHp());
+          System.out.println("-----------------------------------------------------------------------------------------------------------");
     }
     void checkMonDead() {
     	if(monster.getHp() <= 0 && nmonster>0) {
       	  nmonster--;monster = mon1.clone();   
-  	      //System.err.println("nmonter = " + nmonster);
-  	      System.out.println("Wow Monster Defeated");
+  	      //System.err.println("\t>>"+"nmonter = " + nmonster);
+  	      System.err.println("\t"+"                   |||  Wow Monster Defeated!   |||");
   	      showMonster();   
   	      checkLastMon();
       }
@@ -225,8 +286,9 @@ public class App extends JPanel implements ActionListener{
     void checkLastBoss() {			// there are last boss??
     	if(count<3) {
          	showMonster();
+         	System.err.println("\t"+"                   |||  Hooo! Boss Defeated!   |||");
 		 }else {
-			 System.out.println("Win!!!");
+			 System.out.println(">>"+"Win!!!");
 			 gameOver();
 		 }
     }
