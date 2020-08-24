@@ -18,6 +18,8 @@ public class App extends JPanel implements ActionListener{
 	static boolean playing = true,IsDead=false;
 	JButton attack,heal,exit,start;
 	
+	List<Boss> TombOfBoss = new ArrayList<Boss>();
+	
 	static Hero hero = Hero.GetHero();
 	static Monster mon1 = new Monster();
 	static EnemyPool pool = new EnemyPool();
@@ -63,7 +65,10 @@ public class App extends JPanel implements ActionListener{
         frame.setBounds(100, 100, 640, 600);
         frame.setTitle("Gamenaja");
         frame.setVisible(true);
-        System.out.println("Hello");
+        System.out.println("|||||||||||||||||||||||");
+        System.out.println("||  Start Adventure  ||");
+        System.out.println("|||||||||||||||||||||||");
+        
         //Scanner scanner = new Scanner(System.in);
        
     }
@@ -129,6 +134,10 @@ public class App extends JPanel implements ActionListener{
         	else {													// dead (Isdead = true)
         		System.out.println("game is over!!! press start or exit");
         		if(e.getSource().equals(start)) {
+        			
+        			for(int u = 0;u<count;u++) {
+        				pool.back(TombOfBoss.get(u));
+        			}
         			startNew();
         			showMonster();
         		}
@@ -142,6 +151,7 @@ public class App extends JPanel implements ActionListener{
     	System.out.println("Found Monster : Hp is " + monster.getHp());
     	System.out.println("Hero Hp now is " + hero.getHp());
         System.out.println("What do you do : Attack(A) Heal(H)");
+        System.out.println("---------------------------------");
         }
     }
     void attMonster() {
@@ -149,10 +159,12 @@ public class App extends JPanel implements ActionListener{
          System.out.println("Monster Hp now is " + monster.getHp());
          monster.Attack(hero);
          System.out.println("Hero Hp now is " + hero.getHp());
+         System.out.println("---------------------------------");
     }
     void heroHeal() {
     	hero.heal();
         System.out.println("Heal!!!!!!!, Hero Hp now is " + hero.getHp());
+        System.out.println("---------------------------------");
     }
     void showBoss() {
     	
@@ -165,7 +177,7 @@ public class App extends JPanel implements ActionListener{
     	IsDead=false;
     	hero.Hp=100;
     	nmonster=2;
-    	count=1;
+    	count=0;
     	
     }
     void gameOver() {
@@ -173,10 +185,12 @@ public class App extends JPanel implements ActionListener{
     	IsDead=true;
     }
     void attBoss() {
+    	
     	  hero.Attack(boss);
           System.out.println("Boss Hp now is " + boss.getHp());
           boss.Attack(hero);
           System.out.println("Hero Hp now is " + hero.getHp());
+          System.out.println("---------------------------------");
     }
     void checkMonDead() {
     	if(monster.getHp() <= 0 && nmonster>0) {
@@ -201,10 +215,10 @@ public class App extends JPanel implements ActionListener{
     }
     void checkBoss() {				//check boss dead
     	if(boss.getHp()<=0) {
-			 pool.back(boss);
         	nmonster=2;
         	count++;
         	firstTimeBoss=true;
+        	TombOfBoss.add(boss);
         	checkLastBoss();
     }
     	}

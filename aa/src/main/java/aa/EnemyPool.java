@@ -5,7 +5,7 @@ import java.util.List;
 
 public class EnemyPool {
 	List<Boss> Pool = new ArrayList<Boss>();
-    List<Boss> UsePool = new ArrayList<Boss>();
+    List<String> UsePool = new ArrayList<String>();
     String pop;
     
 
@@ -16,22 +16,22 @@ public class EnemyPool {
 		
 	}
 	
-    
-    Monster mon1 = new Monster();
-    
-    
-    
-    
     public int getMaxPool() {
     	return MaxPool;
     }
     public Boss borrow() {
-    	if ((Pool.size() == 0)&&(UsePool.size()<MaxPool))   			
+    	if ((Pool.size() == 0)&&(UsePool.size()<=MaxPool)) { 
+    		UsePool.add("Boss");
     		return new Boss();
-    	else
+    	}
+    	else {
+    		UsePool.add("Boss");
     		return Pool.remove(0);
+    	}
     }
     public void back(Boss boss) {
+    	boss.Hp = 200;
+    	UsePool.remove(0);
     	Pool.add(boss);
     }
 }
