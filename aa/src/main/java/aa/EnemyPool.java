@@ -3,7 +3,7 @@ package aa;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EnermyPool {
+public class EnemyPool {
 	List<Boss> Pool = new ArrayList<Boss>();
     List<Boss> UsePool = new ArrayList<Boss>();
     String pop;
@@ -11,7 +11,7 @@ public class EnermyPool {
 
     
 	int MaxPool = 3;
-	public EnermyPool(){
+	public EnemyPool(){
 			
 		
 	}
