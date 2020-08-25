@@ -30,6 +30,7 @@ public class App extends JPanel implements ActionListener{
 	
 	static JFrame frame=new JFrame();
 	List<Boss> TombOfBoss = new ArrayList<Boss>();
+	List<Boss> ABoss = new ArrayList<Boss>();
 	
 	static Hero hero = Hero.GetHero();
 	static Monster mon1 = new Monster();
@@ -142,6 +143,10 @@ public class App extends JPanel implements ActionListener{
         	if(!IsDead) {											//Is dead=false 
         	if(count<3) {											
 	            if (hero.getHp() == 0) {
+	            		if(count != 3) {
+	            			pool.back(ABoss.get(0));
+	            			ABoss.remove(0);
+	            		}
 	            	System.out.println(">>"+"Game over!!!");
 	            	
 	            }
@@ -195,13 +200,20 @@ public class App extends JPanel implements ActionListener{
         	else {													// dead (Isdead = true)
         		System.out.println(">>"+"game is over!!! press start or exit");
         		if(e.getSource().equals(start)) {
-        			
-        			for(int u = 0;u<count;u++) {
-        				pool.back(TombOfBoss.get(u));
+        			if(TombOfBoss.size()>= 1) {
+	        			for(int u = 0;u<count;u++) {
+	        				pool.back(TombOfBoss.get(u));
+	        			}        			
+        			}
+        			if(ABoss.size()>= 1 && TombOfBoss.size()!= 3 ) {
+        				for(int f = 0;f<ABoss.size();f++) {
+        					pool.back(ABoss.get(f));
+        					ABoss.remove(0);
+        				}        			
         			}
         			startNew();
         			showMonster();
-        		}
+        		}		
 }
         	
         }
@@ -239,6 +251,17 @@ public class App extends JPanel implements ActionListener{
     	hero.Hp=100;
     	nmonster=2;
     	count=0;
+    	if(TombOfBoss.size()>= 1) {
+			for(int p = 0;p<TombOfBoss.size();p++) {
+				TombOfBoss.remove(0);
+			}        			
+		}
+    	if(ABoss.size()>= 1) {
+			for(int f = 0;f<ABoss.size();f++) {				
+				ABoss.remove(0);
+			}        			
+		}
+    	
     	
     }
     void gameOver() {
@@ -258,6 +281,7 @@ public class App extends JPanel implements ActionListener{
       	  nmonster--;monster = mon1.clone();   
   	      //System.err.println("\t>>"+"nmonter = " + nmonster);
   	      System.err.println("\t"+"                   |||  Wow Monster Defeated!   |||");
+  	    System.out.println("-----------------------------------------------------------------------------------------------------------");
   	      showMonster();   
   	      checkLastMon();
       }
@@ -265,6 +289,7 @@ public class App extends JPanel implements ActionListener{
     void checkLastMon() {			//check nmonsters are 2? boss start:nothing; 
     	if(nmonster==0) {
       		boss = pool.borrow();
+      		ABoss.add(boss);
       		showBoss();
       		nmonster=-1;
       		}
@@ -287,6 +312,7 @@ public class App extends JPanel implements ActionListener{
     	if(count<3) {
          	showMonster();
          	System.err.println("\t"+"                   |||  Hooo! Boss Defeated!   |||");
+         	System.out.println("-----------------------------------------------------------------------------------------------------------");
 		 }else {
 			 System.out.println(">>"+"Win!!!");
 			 gameOver();
